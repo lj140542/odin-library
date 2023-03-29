@@ -15,6 +15,47 @@ header {
   border-bottom: 2px solid #333333; /* 700 */
   color: #333333;
 }
+
 header img {
   width: 64px;
+}
+
+#library {
+  padding: 2% 5% 2% 5%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(210px,1fr));
+  grid-template-rows: 1fr;
+  grid-auto-rows: 1fr;
+  gap: 20px;
+}
+
+.book {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: solid 1px #333333;
+  border-radius: 5px;
+  gap: 100px;
+}
+
+.main-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.other-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  justify-self: end;
+}
+
+.title {
+  font-size: 2.5rem;
+  text-align: center;
+}
+.author {
+  font-size: 1.5rem;
 }
