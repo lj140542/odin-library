@@ -1,9 +1,11 @@
 body {
+  color: #333333;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
   margin: 0px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f3f4f6;
 }
 
 header {
@@ -11,9 +13,10 @@ header {
   align-items: center;
   gap: 10px;
   padding-left: 2%;
-  background-color: #e2e8f0; /* 200 */
-  border-bottom: 2px solid #333333; /* 700 */
-  color: #333333;
+  background-color: #e2e8f0;
+  /* 200 */
+  border-bottom: 2px solid #333333;
+  /* 700 */
 }
 
 header img {
@@ -23,10 +26,11 @@ header img {
 #library {
   padding: 2% 5% 2% 5%;
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(210px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   grid-template-rows: 1fr;
   grid-auto-rows: 1fr;
   gap: 20px;
+  background-color: #f3f4f6;
 }
 
 #library button {
@@ -40,7 +44,7 @@ header img {
   transform: scale(1.01);
 }
 
-#library button img{
+#library button img {
   width: 64px;
 }
 
@@ -60,6 +64,7 @@ header img {
   align-items: center;
   justify-content: center;
 }
+
 .other-info {
   display: flex;
   align-items: center;
@@ -71,6 +76,69 @@ header img {
   font-size: 2.5rem;
   text-align: center;
 }
+
 .author {
   font-size: 1.5rem;
+}
+
+#book-form-section {
+  position: fixed;
+  display: none;
+  background-color: #33333389;
+}
+
+#book-form-section.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+form {
+  background-color: #e2e8f0;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  align-items: center;
+  border: solid 1px #333333;
+  border-radius: 5px;
+  gap: 10px;
+  transform: scale(2);
+  z-index: -1;
+}
+
+form h3 {
+  margin-bottom: 0px;
+}
+
+form p {
+  margin: 0px;
+  font-size: 0.5rem;
+  color: crimson;
+}
+
+form label {
+  font-size: 0.7rem;
+}
+
+form button {
+  color: #333333;
+  background-color: #f3f4f6;
+  border: solid 1px #333333;
+  border-radius: 5px;
+  padding: 0% 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form button img {
+  width: 24px;
+}
+
+#form-read {
+  display: flex;
+  align-items: center;
 }

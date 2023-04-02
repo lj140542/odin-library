@@ -16,8 +16,22 @@
     <h1>Odin's Library</h1>
   </header>
   <div id="library">
-    <button><img src="./img/add-book.png" alt="add-book"></button>
+    <button id="add-book-button"><img id="add-book-img" src="./img/add-book.png" alt="add-book"></button>
   </div>
+  <section id="book-form-section">
+    <form action="" method="get" id="book-form" class="ignore">
+      <h3 class="ignore">New Book</h3>
+      <p id="error" class="ignore"></p>
+      <input type="text" name="title" id="title" placeholder="Title" required>
+      <input type="text" name="author" id="author" placeholder="Author" required>
+      <input type="number" name="pages" id="pages" placeholder="Pages">
+      <div id="form-read">
+        <label for="read">Have you read it ? </label>
+        <input type="checkbox" name="read" id="read">
+      </div>
+      <button type="submit" id="book-form-button"><img class="ignore" src="./img/add-book.png" alt="add-book"></button>
+    </form>
+  </section>
 </body>
 
 </html>

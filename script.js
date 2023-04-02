@@ -1,4 +1,12 @@
 let library = [];
+let addBookButton = document.getElementById('add-book-button');
+let addBookImg = document.getElementById('add-book-img');
+let bookForm = document.getElementById('book-form');
+let bookSection = document.getElementById('book-form-section');
+let bookFormButton = document.getElementById('book-form-button');
+let lib = document.getElementById('library');
+let header = document.getElementsByTagName('header')[0];
+let error = document.getElementById('error');
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -8,6 +16,55 @@ function Book(title, author, pages, read) {
 }
 function addBookToLibrary(title, author, pages, read) {
   library.push(new Book(title, author, pages, read));
+}
+function hideForm(e) {
+  if (e == null) {
+    bookSection.classList.remove('active');
+    bookForm.reset();
+    error.textContent = '';
+    return;
+  }
+  if (e.target.form == undefined && e.target.classList[0] != 'ignore') {
+    bookSection.classList.remove('active');
+    bookForm.reset();
+    error.textContent = '';
+  }
+}
+function showForm() {
+  bookSection.classList.add('active');
+}
+function clearLibrary() {
+  let books = Array.from(document.getElementsByClassName('book'));
+  books.forEach(book => book.remove());
+}
+function isPresent(element) {
+  return (element.title == this);
+}
+function addBook(e) {
+  let title = document.getElementById('title');
+  let author = document.getElementById('author');
+  let pages = document.getElementById('pages');
+  let read = document.getElementById('read');
+
+  if (title.value == '') {
+    //error.textContent = 'Please fill out the Title field';
+    return;
+  }
+  else if (library.findIndex(isPresent, title.value) != -1) {
+    error.textContent = 'This book is already in the library';
+    e.preventDefault();
+    return;
+  }
+  if (author.value == '') {
+    //error.textContent = 'Please fill out the Author field';
+    return;
+  }
+
+  addBookToLibrary(title.value, author.value, pages.value, read.checked);
+  clearLibrary();
+  library.display();
+  hideForm(null);
+  e.preventDefault();
 }
 
 Book.prototype.info = function () {
@@ -25,7 +82,6 @@ Book.prototype.info = function () {
 };
 Book.prototype.display = function () {
   let book, main, title, author, other, pages, read;
-  let lib = document.getElementById('library');
 
   // creation of the book
   book = document.createElement('div');
@@ -87,3 +143,8 @@ addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', '295', false);
 addBookToLibrary('Alice in Wonderland', 'Lewis Carroll', '295', true);
 addBookToLibrary('1984', 'George Orwell', '295', true);
 library.display();
+
+bookSection.addEventListener('click', e => hideForm(e));
+addBookImg.addEventListener('click', e => showForm(e));
+addBookButton.addEventListener('click', e => showForm(e));
+bookFormButton.addEventListener('click', e => addBook(e));
