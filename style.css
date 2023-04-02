@@ -83,16 +83,21 @@ header img {
 
 #book-form-section {
   position: fixed;
-  display: none;
-  background-color: #33333389;
-}
-
-#book-form-section.active {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100vw;
+  top: 0;
+  left: 0;
+  transform: translate(0%, 100%) scale(0);
+  transition: transform 1.5s, background-color 0.1s;
+}
+
+#book-form-section.active {
+  transform: translate(0%, 0%) scale(1);
+  background-color: #33333389;
+  transition: transform 0.3s, background-color 4s;
 }
 
 form {
