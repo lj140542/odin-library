@@ -85,19 +85,24 @@ header img {
   font-size: 1.5rem;
 }
 
-.read img {
+.book-interface img {
   width: 24px;
   transform: scale(1);
   transition: 0.3s ease;
 }
 
-.read img:hover {
+.book-interface img:hover {
   transform: scale(1.3);
 
 }
 
-.read img:active {
+.book-interface img:active {
   transform: scale(0.8);
+}
+
+.book-interface {
+  display: flex;
+  gap: 10px;
 }
 
 #book-form-section {

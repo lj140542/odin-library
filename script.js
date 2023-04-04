@@ -72,6 +72,13 @@ function swithReadStatus(e) {
   library[bookId].read = !library[bookId].read;
   e.target.src = library[bookId].read == true ? './img/read-icon.png' : './img/not-read-icon.png';
 }
+function removeBook(e) {
+  let bookId = e.target.dataset.id;
+  if (bookId < 0 || bookId >= library.length) { return; }
+  library.splice(bookId, 1);
+  clearLibrary();
+  library.display();
+}
 
 Book.prototype.info = function () {
   let ret = '';
@@ -87,11 +94,12 @@ Book.prototype.info = function () {
   return ret;
 };
 Book.prototype.display = function (rank) {
-  let book, main, title, author, other, pages, read, img;
+  let book, main, title, author, other, pages, read, img, div, del;
 
   // creation of the book
   book = document.createElement('div');
   book.classList.add('book');
+  book.dataset.id = rank;
 
   // creation of the main-info 
   title = document.createElement('span');
@@ -108,6 +116,15 @@ Book.prototype.display = function (rank) {
   pages = document.createElement('span');
   pages.classList.add('pages');
   pages.textContent = this.pages;
+  div = document.createElement('div');
+  div.classList.add('book-interface');
+  del = document.createElement('span');
+  del.classList.add('read');
+  img = document.createElement('img');
+  img.src = './img/delete-icon.png';
+  img.dataset.id = rank;
+  img.addEventListener('click', e => removeBook(e));
+  del.append(img);
   read = document.createElement('span');
   read.classList.add('read');
   img = document.createElement('img');
@@ -115,9 +132,10 @@ Book.prototype.display = function (rank) {
   img.dataset.id = rank;
   img.addEventListener('click', e => swithReadStatus(e));
   read.append(img);
+  div.append(del, read);
   other = document.createElement('div');
   other.classList.add('other-info');
-  other.append(pages, read);
+  other.append(pages, div);
 
   book.append(main, other);
   lib.prepend(book);
