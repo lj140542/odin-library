@@ -66,6 +66,12 @@ function addBook(e) {
   hideForm(null);
   e.preventDefault();
 }
+function swithReadStatus(e) {
+  let bookId = e.target.dataset.id;
+  if (bookId < 0 || bookId >= library.length) { return; }
+  library[bookId].read = !library[bookId].read;
+  e.target.src = library[bookId].read == true ? './img/read-icon.png' : './img/not-read-icon.png';
+}
 
 Book.prototype.info = function () {
   let ret = '';
@@ -80,8 +86,8 @@ Book.prototype.info = function () {
 
   return ret;
 };
-Book.prototype.display = function () {
-  let book, main, title, author, other, pages, read;
+Book.prototype.display = function (rank) {
+  let book, main, title, author, other, pages, read, img;
 
   // creation of the book
   book = document.createElement('div');
@@ -104,7 +110,11 @@ Book.prototype.display = function () {
   pages.textContent = this.pages;
   read = document.createElement('span');
   read.classList.add('read');
-  read.textContent = this.read;
+  img = document.createElement('img');
+  img.src = this.read == true ? './img/read-icon.png' : './img/not-read-icon.png';
+  img.dataset.id = rank;
+  img.addEventListener('click', e => swithReadStatus(e));
+  read.append(img);
   other = document.createElement('div');
   other.classList.add('other-info');
   other.append(pages, read);
@@ -131,8 +141,8 @@ library.display = function () {
     }
     return 0;
   });
-  library.forEach(function (book) {
-    book.display();
+  library.forEach(function (book, rank) {
+    book.display(rank);
   });
 };
 

@@ -81,6 +81,17 @@ header img {
   font-size: 1.5rem;
 }
 
+.read img {
+  width: 24px;
+  transform: scale(1);
+  transition: 0.3s;
+}
+
+.read img:hover {
+  transform: scale(1.3);
+
+}
+
 #book-form-section {
   position: fixed;
   display: flex;
