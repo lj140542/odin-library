@@ -8,11 +8,75 @@ let lib = document.getElementById('library');
 let header = document.getElementsByTagName('header')[0];
 let error = document.getElementById('error');
 
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+  }
+
+  info() {
+    let ret = '';
+
+    ret = this.title.toString() + ' by ' + this.author.toString() + ', ' + this.pages.toString() + ' pages, ';
+    if (this.read == true) {
+      ret += 'read';
+    }
+    else {
+      ret += 'not read yet';
+    }
+
+    return ret;
+  }
+
+  display(rank) {
+    let book, main, title, author, other, pages, read, img, div, del;
+
+    // creation of the book
+    book = document.createElement('div');
+    book.classList.add('book');
+    book.dataset.id = rank;
+
+    // creation of the main-info 
+    title = document.createElement('span');
+    title.classList.add('title');
+    title.textContent = this.title;
+    author = document.createElement('span');
+    author.classList.add('author');
+    author.textContent = this.author;
+    main = document.createElement('div');
+    main.classList.add('main-info');
+    main.append(title, author);
+
+    // creation of the other-info
+    pages = document.createElement('span');
+    pages.classList.add('pages');
+    pages.textContent = this.pages;
+    div = document.createElement('div');
+    div.classList.add('book-interface');
+    del = document.createElement('span');
+    del.classList.add('read');
+    img = document.createElement('img');
+    img.src = './img/delete-icon.png';
+    img.dataset.id = rank;
+    img.addEventListener('click', e => removeBook(e));
+    del.append(img);
+    read = document.createElement('span');
+    read.classList.add('read');
+    img = document.createElement('img');
+    img.src = this.read == true ? './img/read-icon.png' : './img/not-read-icon.png';
+    img.dataset.id = rank;
+    img.addEventListener('click', e => swithReadStatus(e));
+    read.append(img);
+    div.append(del, read);
+    other = document.createElement('div');
+    other.classList.add('other-info');
+    other.append(pages, div);
+
+    book.append(main, other);
+    lib.prepend(book);
+  }
 }
 function addBookToLibrary(title, author, pages, read) {
   library.push(new Book(title, author, pages, read));
@@ -79,67 +143,6 @@ function removeBook(e) {
   clearLibrary();
   library.display();
 }
-
-Book.prototype.info = function () {
-  let ret = '';
-
-  ret = this.title.toString() + ' by ' + this.author.toString() + ', ' + this.pages.toString() + ' pages, ';
-  if (this.read == true) {
-    ret += 'read';
-  }
-  else {
-    ret += 'not read yet';
-  }
-
-  return ret;
-};
-Book.prototype.display = function (rank) {
-  let book, main, title, author, other, pages, read, img, div, del;
-
-  // creation of the book
-  book = document.createElement('div');
-  book.classList.add('book');
-  book.dataset.id = rank;
-
-  // creation of the main-info 
-  title = document.createElement('span');
-  title.classList.add('title');
-  title.textContent = this.title;
-  author = document.createElement('span');
-  author.classList.add('author');
-  author.textContent = this.author;
-  main = document.createElement('div');
-  main.classList.add('main-info');
-  main.append(title, author);
-
-  // creation of the other-info
-  pages = document.createElement('span');
-  pages.classList.add('pages');
-  pages.textContent = this.pages;
-  div = document.createElement('div');
-  div.classList.add('book-interface');
-  del = document.createElement('span');
-  del.classList.add('read');
-  img = document.createElement('img');
-  img.src = './img/delete-icon.png';
-  img.dataset.id = rank;
-  img.addEventListener('click', e => removeBook(e));
-  del.append(img);
-  read = document.createElement('span');
-  read.classList.add('read');
-  img = document.createElement('img');
-  img.src = this.read == true ? './img/read-icon.png' : './img/not-read-icon.png';
-  img.dataset.id = rank;
-  img.addEventListener('click', e => swithReadStatus(e));
-  read.append(img);
-  div.append(del, read);
-  other = document.createElement('div');
-  other.classList.add('other-info');
-  other.append(pages, div);
-
-  book.append(main, other);
-  lib.prepend(book);
-};
 
 library.toString = function () {
   library.forEach(function (book) {
