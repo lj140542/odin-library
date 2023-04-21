@@ -60,14 +60,14 @@ class Book {
     img = document.createElement('img');
     img.src = './img/delete-icon.png';
     img.dataset.id = rank;
-    img.addEventListener('click', e => removeBook(e));
+    img.addEventListener('click', e => Controler.removeBook(e));
     del.append(img);
     read = document.createElement('span');
     read.classList.add('read');
     img = document.createElement('img');
     img.src = this.read == true ? './img/read-icon.png' : './img/not-read-icon.png';
     img.dataset.id = rank;
-    img.addEventListener('click', e => swithReadStatus(e));
+    img.addEventListener('click', e => Controler.swithReadStatus(e));
     read.append(img);
     div.append(del, read);
     other = document.createElement('div');
@@ -78,70 +78,74 @@ class Book {
     lib.prepend(book);
   }
 }
-function addBookToLibrary(title, author, pages, read) {
-  library.push(new Book(title, author, pages, read));
-}
-function hideForm(e) {
-  if (e == null) {
-    bookSection.classList.remove('active');
-    bookForm.reset();
-    error.textContent = '';
-    return;
-  }
-  if (e.target.form == undefined && e.target.classList[0] != 'ignore') {
-    bookSection.classList.remove('active');
-    bookForm.reset();
-    error.textContent = '';
-  }
-}
-function showForm() {
-  bookSection.classList.add('active');
-}
-function clearLibrary() {
-  let books = Array.from(document.getElementsByClassName('book'));
-  books.forEach(book => book.remove());
-}
-function isPresent(element) {
-  return (element.title == this);
-}
-function addBook(e) {
-  let title = document.getElementById('title');
-  let author = document.getElementById('author');
-  let pages = document.getElementById('pages');
-  let read = document.getElementById('read');
 
-  if (title.value == '') {
-    //error.textContent = 'Please fill out the Title field';
-    return;
+class Controler {
+  static addBookToLibrary(title, author, pages, read) {
+    library.push(new Book(title, author, pages, read));
   }
-  else if (library.findIndex(isPresent, title.value) != -1) {
-    error.textContent = 'This book is already in the library';
+  static hideForm(e) {
+    if (e == null) {
+      bookSection.classList.remove('active');
+      bookForm.reset();
+      error.textContent = '';
+      return;
+    }
+    if (e.target.form == undefined && e.target.classList[0] != 'ignore') {
+      bookSection.classList.remove('active');
+      bookForm.reset();
+      error.textContent = '';
+    }
+  }
+  static showForm() {
+    bookSection.classList.add('active');
+  }
+  static clearLibrary() {
+    let books = Array.from(document.getElementsByClassName('book'));
+    books.forEach(book => book.remove());
+  }
+  static isPresent(element) {
+    return (element.title == this);
+  }
+  static addBook(e) {
+    let title = document.getElementById('title');
+    let author = document.getElementById('author');
+    let pages = document.getElementById('pages');
+    let read = document.getElementById('read');
+
+    if (title.value == '') {
+      //error.textContent = 'Please fill out the Title field';
+      return;
+    }
+    else if (library.findIndex(this.isPresent, title.value) != -1) {
+      error.textContent = 'This book is already in the library';
+      e.preventDefault();
+      return;
+    }
+    if (author.value == '') {
+      //error.textContent = 'Please fill out the Author field';
+      return;
+    }
+
+    this.addBookToLibrary(title.value, author.value, pages.value, read.checked);
+    this.clearLibrary();
+    library.display();
+    this.hideForm(null);
     e.preventDefault();
-    return;
   }
-  if (author.value == '') {
-    //error.textContent = 'Please fill out the Author field';
-    return;
+  static swithReadStatus(e) {
+    let bookId = e.target.dataset.id;
+    if (bookId < 0 || bookId >= library.length) { return; }
+    library[bookId].read = !library[bookId].read;
+    e.target.src = library[bookId].read == true ? './img/read-icon.png' : './img/not-read-icon.png';
+  }
+  static removeBook(e) {
+    let bookId = e.target.dataset.id;
+    if (bookId < 0 || bookId >= library.length) { return; }
+    library.splice(bookId, 1);
+    this.clearLibrary();
+    library.display();
   }
 
-  addBookToLibrary(title.value, author.value, pages.value, read.checked);
-  clearLibrary();
-  library.display();
-  hideForm(null);
-  e.preventDefault();
-}
-function swithReadStatus(e) {
-  let bookId = e.target.dataset.id;
-  if (bookId < 0 || bookId >= library.length) { return; }
-  library[bookId].read = !library[bookId].read;
-  e.target.src = library[bookId].read == true ? './img/read-icon.png' : './img/not-read-icon.png';
-}
-function removeBook(e) {
-  let bookId = e.target.dataset.id;
-  if (bookId < 0 || bookId >= library.length) { return; }
-  library.splice(bookId, 1);
-  clearLibrary();
-  library.display();
 }
 
 library.toString = function () {
@@ -167,15 +171,15 @@ library.display = function () {
   });
 };
 
-addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', '295', false);
-addBookToLibrary('The Fellowship of the Ring', 'J.R.R. Tolkien', '295', true);
-addBookToLibrary('The Two Towers', 'J.R.R. Tolkien', '295', false);
-addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', '295', false);
-addBookToLibrary('Alice in Wonderland', 'Lewis Carroll', '295', true);
-addBookToLibrary('1984', 'George Orwell', '295', true);
+Controler.addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', '295', false);
+Controler.addBookToLibrary('The Fellowship of the Ring', 'J.R.R. Tolkien', '295', true);
+Controler.addBookToLibrary('The Two Towers', 'J.R.R. Tolkien', '295', false);
+Controler.addBookToLibrary('The Return of the King', 'J.R.R. Tolkien', '295', false);
+Controler.addBookToLibrary('Alice in Wonderland', 'Lewis Carroll', '295', true);
+Controler.addBookToLibrary('1984', 'George Orwell', '295', true);
 library.display();
 
-bookSection.addEventListener('click', e => hideForm(e));
-addBookImg.addEventListener('click', e => showForm(e));
-addBookButton.addEventListener('click', e => showForm(e));
-bookFormButton.addEventListener('click', e => addBook(e));
+bookSection.addEventListener('click', e => Controler.hideForm(e));
+addBookImg.addEventListener('click', e => Controler.showForm(e));
+addBookButton.addEventListener('click', e => Controler.showForm(e));
+bookFormButton.addEventListener('click', e => Controler.addBook(e));
