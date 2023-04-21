@@ -1,12 +1,3 @@
-let library = [];
-let addBookButton = document.getElementById('add-book-button');
-let addBookImg = document.getElementById('add-book-img');
-let bookForm = document.getElementById('book-form');
-let bookSection = document.getElementById('book-form-section');
-let bookFormButton = document.getElementById('book-form-button');
-let lib = document.getElementById('library');
-let header = document.getElementsByTagName('header')[0];
-let error = document.getElementById('error');
 
 class Book {
   constructor(title, author, pages, read) {
@@ -148,28 +139,40 @@ class Controler {
 
 }
 
-library.toString = function () {
-  library.forEach(function (book) {
-    console.log(book.info());
-  });
-};
-library.display = function () {
-  // sort books by title (reversed for display) 
-  library.sort((a, b) => {
-    const titleA = a.title.toUpperCase();
-    const titleB = b.title.toUpperCase();
-    if (titleA < titleB) {
-      return 1;
-    }
-    if (titleA > titleB) {
-      return -1;
-    }
-    return 0;
-  });
-  library.forEach(function (book, rank) {
-    book.display(rank);
-  });
-};
+class Library extends Array {
+  toString() {
+    library.forEach(function (book) {
+      console.log(book.info());
+    });
+  }
+  display() {
+    // sort books by title (reversed for display) 
+    library.sort((a, b) => {
+      const titleA = a.title.toUpperCase();
+      const titleB = b.title.toUpperCase();
+      if (titleA < titleB) {
+        return 1;
+      }
+      if (titleA > titleB) {
+        return -1;
+      }
+      return 0;
+    });
+    library.forEach(function (book, rank) {
+      book.display(rank);
+    });
+  }
+}
+
+let library = new Library();
+let addBookButton = document.getElementById('add-book-button');
+let addBookImg = document.getElementById('add-book-img');
+let bookForm = document.getElementById('book-form');
+let bookSection = document.getElementById('book-form-section');
+let bookFormButton = document.getElementById('book-form-button');
+let lib = document.getElementById('library');
+let header = document.getElementsByTagName('header')[0];
+let error = document.getElementById('error');
 
 Controler.addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', '295', false);
 Controler.addBookToLibrary('The Fellowship of the Ring', 'J.R.R. Tolkien', '295', true);
