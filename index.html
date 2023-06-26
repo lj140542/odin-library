@@ -19,12 +19,20 @@
     <button id="add-book-button"><img id="add-book-img" src="./img/add-book.png" alt="add-book"></button>
   </div>
   <section id="book-form-section">
-    <form action="" method="get" id="book-form" class="ignore">
+    <form action="" method="get" id="book-form" class="ignore" novalidate>
       <h3 class="ignore">New Book</h3>
-      <p id="error" class="ignore"></p>
-      <input type="text" name="title" id="title" placeholder="Title" required>
-      <input type="text" name="author" id="author" placeholder="Author" required>
-      <input type="number" name="pages" id="pages" placeholder="Pages">
+      <div>
+        <input type="text" name="title" id="title" placeholder="Title" required>
+        <span id="title-error" class="ignore error"></span>
+      </div>
+      <div>
+        <input type="text" name="author" id="author" placeholder="Author" required>
+        <span id="author-error" class="ignore error"></span>
+      </div>
+      <div>
+        <input type="number" name="pages" id="pages" placeholder="Pages">
+        <span id="pages-error" class="ignore error"></span>
+      </div>
       <div id="form-read">
         <label for="read">Have you read it ? </label>
         <input type="checkbox" name="read" id="read">

@@ -78,13 +78,17 @@ class Controler {
     if (e == null) {
       bookSection.classList.remove('active');
       bookForm.reset();
-      error.textContent = '';
+      titleError.textContent = '';
+      authorError.textContent = '';
+      pagesError.textContent = '';
       return;
     }
     if (e.target.form == undefined && e.target.classList[0] != 'ignore') {
       bookSection.classList.remove('active');
       bookForm.reset();
-      error.textContent = '';
+      titleError.textContent = '';
+      authorError.textContent = '';
+      pagesError.textContent = '';
     }
   }
   static showForm() {
@@ -97,31 +101,11 @@ class Controler {
   static isPresent(element) {
     return (element.title == this);
   }
-  static addBook(e) {
-    let title = document.getElementById('title');
-    let author = document.getElementById('author');
-    let pages = document.getElementById('pages');
-    let read = document.getElementById('read');
-
-    if (title.value == '') {
-      //error.textContent = 'Please fill out the Title field';
-      return;
-    }
-    else if (library.findIndex(this.isPresent, title.value) != -1) {
-      error.textContent = 'This book is already in the library';
-      e.preventDefault();
-      return;
-    }
-    if (author.value == '') {
-      //error.textContent = 'Please fill out the Author field';
-      return;
-    }
-
+  static addBook() {
     this.addBookToLibrary(title.value, author.value, pages.value, read.checked);
     this.clearLibrary();
     library.display();
     this.hideForm(null);
-    e.preventDefault();
   }
   static swithReadStatus(e) {
     let bookId = e.target.dataset.id;
@@ -135,6 +119,49 @@ class Controler {
     library.splice(bookId, 1);
     this.clearLibrary();
     library.display();
+  }
+  static titleValidation() {
+    if (library.findIndex(this.isPresent, title.value) != -1) {
+      title.classList.add('invalid');
+      titleError.textContent = 'This book is already in the library';
+      return false;
+    }
+    title.classList.remove('invalid');
+    titleError.textContent = '';
+    return true;
+  }
+  static authorValidation() {
+    author.classList.remove('invalid');
+    authorError.textContent = '';
+    return true;
+  }
+  static pagesValidation() {
+    if (pages.value < 0) {
+      pages.classList.add('invalid');
+      pagesError.textContent = 'The minimum number of page is 0';
+      return false;
+    }
+    pages.classList.remove('invalid');
+    pagesError.textContent = '';
+    return true;
+  }
+  static formValidation(e) {
+    let formValid = true;
+    e.preventDefault();
+
+    if (title.classList.contains('invalid') || author.classList.contains('invalid') || pages.classList.contains('invalid')) {
+      formValid = false;
+    }
+    if (title.value == '') {
+      titleError.textContent = 'Please fill out this field';
+      formValid = false;
+    }
+    if (author.value == '') {
+      authorError.textContent = 'Please fill out this field';
+      formValid = false;
+    }
+
+    if (formValid) { this.addBook(); }
   }
 
 }
@@ -169,10 +196,15 @@ let addBookButton = document.getElementById('add-book-button');
 let addBookImg = document.getElementById('add-book-img');
 let bookForm = document.getElementById('book-form');
 let bookSection = document.getElementById('book-form-section');
-let bookFormButton = document.getElementById('book-form-button');
 let lib = document.getElementById('library');
 let header = document.getElementsByTagName('header')[0];
-let error = document.getElementById('error');
+let title = document.getElementById('title');
+let author = document.getElementById('author');
+let pages = document.getElementById('pages');
+let read = document.getElementById('read');
+let titleError = document.getElementById('title-error');
+let authorError = document.getElementById('author-error');
+let pagesError = document.getElementById('pages-error');
 
 Controler.addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', '295', false);
 Controler.addBookToLibrary('The Fellowship of the Ring', 'J.R.R. Tolkien', '295', true);
@@ -185,4 +217,7 @@ library.display();
 bookSection.addEventListener('click', e => Controler.hideForm(e));
 addBookImg.addEventListener('click', e => Controler.showForm(e));
 addBookButton.addEventListener('click', e => Controler.showForm(e));
-bookFormButton.addEventListener('click', e => Controler.addBook(e));
+title.addEventListener('input', () => Controler.titleValidation());
+author.addEventListener('input', () => Controler.authorValidation());
+pages.addEventListener('input', () => Controler.pagesValidation());
+bookForm.addEventListener('submit', (e) => Controler.formValidation(e));
